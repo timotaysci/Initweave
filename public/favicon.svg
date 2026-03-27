@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#1c1c1c"/>
+  <rect width="32" height="32" rx="6" fill="none" stroke="#3a3a3a" stroke-width="1"/>
+  <text x="16" y="22" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="15" font-weight="600" letter-spacing="-0.5">
+    <tspan fill="#c9a84c">i</tspan><tspan fill="#e2e2e2">w</tspan>
+  </text>
+</svg>

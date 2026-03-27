@@ -1,0 +1,21 @@
+{
+  "name": "initweave-api",
+  "version": "1.0.0",
+  "description": "Azure Functions API for initweave",
+  "main": "dist/ask/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "func start"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

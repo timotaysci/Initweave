@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sign in to initweave</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:wght@300;400&display=swap');
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#1c1c1c;font-family:'IBM Plex Mono',monospace;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1c1c1c;min-height:100vh;">
+    <tr>
+      <td align="center" style="padding:48px 16px;">
+
+        <!-- Card -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background-color:#252525;border:1px solid #3a3a3a;border-radius:10px;overflow:hidden;">
+
+          <!-- Header bar -->
+          <tr>
+            <td style="background-color:#1c1c1c;border-bottom:1px solid #3a3a3a;padding:24px 36px;">
+              <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:#c9a84c;letter-spacing:-0.5px;">initweave</p>
+              <p style="margin:4px 0 0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;letter-spacing:0.03em;">build your Emacs init.el</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:36px 36px 28px;">
+              <p style="margin:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#e2e2e2;letter-spacing:0.01em;">Your sign-in link</p>
+              <p style="margin:0 0 28px;font-family:'Source Serif 4',Georgia,serif;font-size:14px;color:#aaa;line-height:1.8;">
+                Click the button below to sign in to initweave. This link expires in 1 hour and can only be used once.
+              </p>
+
+              <!-- CTA button -->
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="border-radius:6px;background-color:#c9a84c;">
+                    <a href="{{ .ConfirmationURL }}"
+                       target="_blank"
+                       style="display:inline-block;padding:12px 28px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#1c1c1c;text-decoration:none;border-radius:6px;letter-spacing:0.01em;">
+                      Sign in to initweave
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:28px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:13px;color:#888;line-height:1.7;">
+                If you didn't request this link, you can safely ignore this email — no account changes have been made.
+              </p>
+            </td>
+          </tr>
+
+        
+          <!-- Footer -->
+          <tr>
+            <td style="border-top:1px solid #3a3a3a;padding:20px 36px;">
+              <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;line-height:1.7;">
+                initweave · operated by Timothy Johnson ·
+                <a href="mailto:tim@timothyjohnsonsci.com" style="color:#888;text-decoration:underline;">tim@timothyjohnsonsci.com</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Card -->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
