@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { modules } from '../modules'
+import { PERSONAS } from '../personas'
 import { resolveEnabled } from '../lib/generator'
 import type { CustomBlock } from '../lib/generator'
 import { useAuth } from '../lib/useAuth'
@@ -18,6 +19,8 @@ type Tab = 'build' | 'coming-soon' | 'about' | 'privacy'
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('build')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [activePersonaIds, setActivePersonaIds] = useState<Set<string>>(new Set())
+  const [builderStarted, setBuilderStarted] = useState(false)
   const [customBlocks, setCustomBlocks] = useState<CustomBlock[]>([])
 
   const { user, loading: authLoading, signInWithEmail, signOut } = useAuth()
@@ -35,16 +38,35 @@ export default function App() {
     })
   }
 
-  function enableModules(ids: string[]) {
-    setSelectedIds((prev) => {
+  function togglePersona(personaId: string, moduleIds: string[]) {
+    setActivePersonaIds((prev) => {
       const next = new Set(prev)
-      for (const id of ids) next.add(id)
+      if (next.has(personaId)) {
+        // Deselecting — remove modules not covered by any remaining persona
+        next.delete(personaId)
+        const coveredByOthers = new Set<string>()
+        for (const pid of next) {
+          const persona = PERSONAS.find((p) => p.id === pid)
+          if (persona) for (const id of persona.moduleIds) coveredByOthers.add(id)
+        }
+        setSelectedIds((prevSelected) => {
+          const remaining = new Set(prevSelected)
+          for (const id of moduleIds) {
+            if (!coveredByOthers.has(id)) remaining.delete(id)
+          }
+          return remaining
+        })
+      } else {
+        // Selecting — add all modules
+        next.add(personaId)
+        setSelectedIds((prevSelected) => {
+          const next2 = new Set(prevSelected)
+          for (const id of moduleIds) next2.add(id)
+          return next2
+        })
+      }
       return next
     })
-  }
-
-  function replaceModules(ids: string[]) {
-    setSelectedIds(new Set(ids))
   }
 
   function toggleCustomBlock(id: string) {
@@ -60,6 +82,8 @@ export default function App() {
   function loadConfig(cfg: SavedConfig) {
     setSelectedIds(new Set(cfg.selected_module_ids))
     setCustomBlocks(cfg.custom_blocks)
+    setActivePersonaIds(new Set())
+    setBuilderStarted(true)
     setActiveTab('build')
   }
 
@@ -117,10 +141,12 @@ export default function App() {
           <BuilderTab
             selectedIds={selectedIds}
             enabledIds={enabledIds}
+            activePersonaIds={activePersonaIds}
+            builderStarted={builderStarted}
             customBlocks={customBlocks}
             onToggle={toggleModule}
-            onEnableModules={enableModules}
-            onReplaceModules={replaceModules}
+            onTogglePersona={togglePersona}
+            onStart={() => setBuilderStarted(true)}
             onToggleCustomBlock={toggleCustomBlock}
             onRemoveCustomBlock={removeCustomBlock}
             user={user}

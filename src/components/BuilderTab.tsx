@@ -12,10 +12,12 @@ import PersonaBuilds from './PersonaBuilds'
 interface Props {
   selectedIds: Set<string>
   enabledIds: Set<string>
+  activePersonaIds: Set<string>
+  builderStarted: boolean
   customBlocks: CustomBlock[]
   onToggle: (id: string) => void
-  onEnableModules: (ids: string[]) => void
-  onReplaceModules: (ids: string[]) => void
+  onTogglePersona: (personaId: string, moduleIds: string[]) => void
+  onStart: () => void
   onToggleCustomBlock: (id: string) => void
   onRemoveCustomBlock: (id: string) => void
   user: User | null
@@ -43,10 +45,12 @@ const GROUP_ORDER = [
 export default function BuilderTab({
   selectedIds,
   enabledIds,
+  activePersonaIds,
+  builderStarted,
   customBlocks,
   onToggle,
-  onEnableModules,
-  onReplaceModules,
+  onTogglePersona,
+  onStart,
   onToggleCustomBlock,
   onRemoveCustomBlock,
   user,
@@ -58,7 +62,6 @@ export default function BuilderTab({
   onLoadConfig,
   onDeleteConfig,
 }: Props) {
-  const [started, setStarted] = useState(false)
   const [mobilePanel, setMobilePanel] = useState<'modules' | 'preview'>('modules')
   const [isMobile] = useState(() => window.matchMedia('(max-width: 640px)').matches)
   const enabledCustomBlocks = customBlocks.filter((b) => b.enabled)
@@ -66,21 +69,20 @@ export default function BuilderTab({
   const initElCode = generateInitEl(enabledIds, modules, enabledCustomBlocks)
   const totalCount = modules.length + customBlocks.length
   const enabledCount = enabledIds.size + enabledCustomBlocks.length
-  const hasSelections = selectedIds.size > 0 || customBlocks.length > 0
 
-  function handleApplyPersona(ids: string[]) {
-    onEnableModules(ids)
-    setStarted(true)
-  }
-
-  // No selections yet — show full-screen persona picker
-  if (!hasSelections && !started) {
+  // Show persona picker until the user explicitly continues or has a loaded config
+  if (!builderStarted) {
     return (
       <div className="persona-picker-root" style={styles.pickerRoot}>
-        <PersonaBuilds onApply={handleApplyPersona} />
+        <PersonaBuilds
+          onApply={(personaId, moduleIds) => {
+            onTogglePersona(personaId, moduleIds)
+            onStart()
+          }}
+        />
         <p style={styles.pickerOr}>
           or{' '}
-          <button style={styles.pickerSkip} onClick={() => setStarted(true)}>
+          <button style={styles.pickerSkip} onClick={onStart}>
             browse all modules manually ↓
           </button>
         </p>
@@ -116,7 +118,11 @@ export default function BuilderTab({
             {enabledCount} / {totalCount} enabled
           </span>
         </div>
-        <PersonaBuilds onApply={onReplaceModules} compact />
+        <PersonaBuilds
+          activePersonaIds={activePersonaIds}
+          onToggle={onTogglePersona}
+          compact
+        />
         <div style={styles.moduleList}>
           {GROUP_ORDER.map((group) => {
             const groupModules = modules.filter((m) => m.group === group)

@@ -557,6 +557,50 @@ export const modules: Module[] = [
   },
 
   {
+    id: 'pdf-tools',
+    label: 'PDF Tools',
+    description: 'Annotate, search, and navigate PDFs natively in Emacs. Replaces DocView with a faster, feature-rich viewer backed by poppler.',
+    required: false,
+    order: 21,
+    group: 'Scientific',
+    elisp: `;;; PDF Tools — native PDF viewer
+
+;; Requires poppler: brew install poppler  /  apt install libpoppler-glib-dev
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-view-resize-factor 1.1)
+  (setq pdf-annot-activate-created-annotations t)
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :bind (:map pdf-view-mode-map
+         ("C-s" . isearch-forward)))`,
+  },
+
+  {
+    id: 'doc-view',
+    label: 'DocView',
+    description: 'Built-in Emacs viewer for PDF, PostScript, and DVI files. No external package required — works with Ghostscript or MuPDF.',
+    required: false,
+    order: 26,
+    group: 'System',
+    elisp: `;;; DocView — built-in document viewer
+
+;; Requires ghostscript: brew install ghostscript  /  apt install ghostscript
+
+(use-package doc-view
+  :ensure nil
+  :config
+  (setq doc-view-continuous t
+        doc-view-resolution 200)
+  :bind (:map doc-view-mode-map
+         ("j" . doc-view-next-page)
+         ("k" . doc-view-previous-page)))`,
+  },
+
+  {
     id: 'org-babel-python',
     label: 'Org Babel — Python',
     description: 'Execute Python code blocks inside org files. Results are written inline — turning org documents into interactive notebooks.',

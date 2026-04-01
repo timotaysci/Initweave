@@ -22,10 +22,12 @@ function mockMatchMedia(mobile: boolean) {
 const baseProps = {
   selectedIds: new Set(['theme', 'which-key']),
   enabledIds: new Set(['theme', 'which-key']),
+  activePersonaIds: new Set<string>(),
+  builderStarted: true,
   customBlocks: [],
   onToggle: vi.fn(),
-  onEnableModules: vi.fn(),
-  onReplaceModules: vi.fn(),
+  onTogglePersona: vi.fn(),
+  onStart: vi.fn(),
   onToggleCustomBlock: vi.fn(),
   onRemoveCustomBlock: vi.fn(),
   user: null,
@@ -60,14 +62,14 @@ describe('BuilderTab mobile panel bar', () => {
 
   it('renders tabs immediately after transitioning from persona picker', () => {
     mockMatchMedia(true)
-    // Start with no selections (picker state), then transition to builder
+    // Start with picker state (builderStarted=false), then transition to builder
     const { rerender } = render(
-      <BuilderTab {...baseProps} selectedIds={new Set()} enabledIds={new Set()} />
+      <BuilderTab {...baseProps} builderStarted={false} />
     )
     // Picker is shown — no tabs yet
     expect(screen.queryByRole('button', { name: 'Modules' })).toBeNull()
 
-    // Persona selected — builder mounts for the first time
+    // Builder started — builder mounts for the first time
     rerender(<BuilderTab {...baseProps} />)
     expect(screen.getByRole('button', { name: 'Modules' })).toBeDefined()
     expect(screen.getByRole('button', { name: 'Preview' })).toBeDefined()
