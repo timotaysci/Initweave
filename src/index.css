@@ -214,6 +214,8 @@ button:disabled {
 
   .builder-sidebar {
     width: 100%;
+    flex: 1;
+    min-height: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
