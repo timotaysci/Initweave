@@ -126,6 +126,14 @@ export default function App() {
             Privacy
           </button>
         </nav>
+        <a
+          href="https://buymeacoffee.com/timotaysci"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.coffee}
+        >
+          ☕ Buy me a coffee
+        </a>
         {supabaseConfigured && (
           <AuthButton
             user={user}
@@ -189,5 +197,16 @@ const styles: Record<string, React.CSSProperties> = {
   tabActive: {
     background: 'var(--surface-raised)',
     color: 'var(--accent)',
+  },
+  coffee: {
+    flexShrink: 0,
+    fontSize: 12,
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-muted)',
+    textDecoration: 'none',
+    padding: '5px 10px',
+    borderRadius: 'var(--radius)',
+    border: '1px solid var(--border)',
+    whiteSpace: 'nowrap' as const,
   },
 }
