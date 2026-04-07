@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { modules } from '../modules'
+import ModuleInfoModal from './ModuleInfoModal'
 
 interface Props {
   moduleId: string
@@ -13,34 +15,50 @@ export default function ModuleCard({ moduleId, enabled, autoDep, onToggle }: Pro
     ? modules.find((m) => m.id === mod.dependsOn)?.label
     : undefined
 
+  const [showInfo, setShowInfo] = useState(false)
+
   return (
-    <div style={{ ...styles.card, ...(enabled ? styles.cardEnabled : {}) }}>
-      <div style={styles.top}>
-        <div style={styles.titleRow}>
-          <span style={styles.label}>{mod.label}</span>
-          <div style={styles.badges}>
-            {mod.required && <span style={styles.badgeRequired}>required</span>}
-            {autoDep && <span style={styles.badgeAuto}>auto-enabled</span>}
-            {parentLabel && !mod.required && (
-              <span style={styles.badgeDep}>requires: {parentLabel}</span>
-            )}
+    <>
+      <div style={{ ...styles.card, ...(enabled ? styles.cardEnabled : {}) }}>
+        <div style={styles.top}>
+          <div style={styles.titleRow}>
+            <div style={styles.labelRow}>
+              <span style={styles.label}>{mod.label}</span>
+              <button
+                style={styles.infoBtn}
+                onClick={() => setShowInfo(true)}
+                aria-label={`About ${mod.label}`}
+                title={`About ${mod.label}`}
+              >
+                ?
+              </button>
+            </div>
+            <div style={styles.badges}>
+              {mod.required && <span style={styles.badgeRequired}>required</span>}
+              {autoDep && <span style={styles.badgeAuto}>auto-enabled</span>}
+              {parentLabel && !mod.required && (
+                <span style={styles.badgeDep}>requires: {parentLabel}</span>
+              )}
+            </div>
           </div>
+          <label style={styles.toggle} aria-label={`Toggle ${mod.label}`}>
+            <input
+              type="checkbox"
+              checked={enabled}
+              disabled={mod.required}
+              onChange={() => onToggle(mod.id)}
+              style={{ display: 'none' }}
+            />
+            <span style={{ ...styles.toggleTrack, ...(enabled ? styles.toggleTrackOn : {}) }}>
+              <span style={{ ...styles.toggleThumb, ...(enabled ? styles.toggleThumbOn : {}) }} />
+            </span>
+          </label>
         </div>
-        <label style={styles.toggle} aria-label={`Toggle ${mod.label}`}>
-          <input
-            type="checkbox"
-            checked={enabled}
-            disabled={mod.required}
-            onChange={() => onToggle(mod.id)}
-            style={{ display: 'none' }}
-          />
-          <span style={{ ...styles.toggleTrack, ...(enabled ? styles.toggleTrackOn : {}) }}>
-            <span style={{ ...styles.toggleThumb, ...(enabled ? styles.toggleThumbOn : {}) }} />
-          </span>
-        </label>
+        <p style={styles.description}>{mod.description}</p>
       </div>
-      <p style={styles.description}>{mod.description}</p>
-    </div>
+
+      {showInfo && <ModuleInfoModal mod={mod} onClose={() => setShowInfo(false)} />}
+    </>
   )
 }
 
@@ -67,10 +85,33 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: 4,
   },
+  labelRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+  },
   label: {
     fontWeight: 600,
     fontSize: 13,
     color: 'var(--text)',
+  },
+  infoBtn: {
+    background: 'none',
+    border: '1px solid var(--border)',
+    borderRadius: '50%',
+    width: 16,
+    height: 16,
+    fontSize: 10,
+    fontWeight: 700,
+    color: 'var(--text-muted)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    lineHeight: 1,
+    flexShrink: 0,
+    transition: 'color 0.15s, border-color 0.15s',
   },
   badges: {
     display: 'flex',
