@@ -1,8 +1,30 @@
-# initweave
+<p align="center">
+  <img src="public/logo.svg" alt="initweave" width="400"/>
+</p>
 
-**A module-based Emacs config generator.** Pick the packages you want, download a working `init.el`, and start using Emacs.
+<p align="center">
+  <strong>A module-based Emacs config generator.</strong><br/>
+  Pick the packages you want, download a working <code>init.el</code>, and start using Emacs.
+</p>
 
-Live at [www.initweave.com](https://www.initweave.com) — free, no account required.
+<p align="center">
+  <a href="https://github.com/timotaysci/Initweave/actions/workflows/azure-static-web-apps-green-ground-018f02f10.yml">
+    <img src="https://github.com/timotaysci/Initweave/actions/workflows/azure-static-web-apps-green-ground-018f02f10.yml/badge.svg" alt="CI/CD"/>
+  </a>
+  <a href="https://www.initweave.com">
+    <img src="https://img.shields.io/website?url=https%3A%2F%2Fwww.initweave.com&label=initweave.com" alt="Website"/>
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"/>
+  </a>
+  <img src="https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white" alt="React 18"/>
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Vite-build-646cff?logo=vite&logoColor=white" alt="Vite"/>
+</p>
+
+<p align="center">
+  Live at <a href="https://www.initweave.com">www.initweave.com</a> — free, no account required.
+</p>
 
 ---
 
@@ -10,18 +32,19 @@ Live at [www.initweave.com](https://www.initweave.com) — free, no account requ
 
 The blank `init.el` is a well-known barrier to entry. Not because Emacs is poorly designed, but because the first session asks you to make decisions you don't yet have the context to make: which completion framework, which theme, which keybindings. You end up copying config snippets from blog posts written years ago, or reaching for Doom or Spacemacs to defer the problem entirely.
 
-I built initweave to give you a better starting point. You pick the modules you want from a curated list, get a working `init.el`, and start using the tool. The opinionation is upfront and explicit rather than hidden inside a framework.
+initweave gives you a better starting point. Pick the modules you want from a curated list, get a working `init.el`, and start using the tool. The opinionation is upfront and explicit rather than hidden inside a framework.
 
 ## Why not Doom or Spacemacs?
 
 I started with Spacemacs. It slowed down my learning. I only really understood what I needed — and how Emacs worked — after building a config from scratch. initweave tries to give you that starting point without an abstraction layer getting in the way. The output is plain elisp with no runtime dependency on initweave. Read it, understand it, modify it.
 
-## What it does
+## Features
 
 - **Choose a persona** — Scientist, Knowledge Worker, Academic, Writer, DevOps, Student, Developer — to pre-select a sensible starting set of modules
 - **Toggle modules** on and off; dependency resolution is automatic (enabling org-roam enables org)
+- **AI Config** — describe what you need in plain English; Claude suggests modules and generates custom elisp blocks for anything the library doesn't cover
 - **Download as `init.el`** for a drop-in config, or **as `init.org`** for an org-babel-tangle workflow
-- **Save configurations** across sessions if you sign in (magic-link, no password)
+- **Save configurations** across sessions if you sign in (magic-link, no password required)
 
 ## Module library
 
@@ -35,7 +58,7 @@ I started with Spacemacs. It slowed down my learning. I only really understood w
 | **System** | vterm, TRAMP |
 | **Editing** | which-key, Ef themes (ef-dream), Sensible defaults |
 
-All third-party packages use `:ensure t`; built-ins (org, eglot, tramp, flyspell, modus-themes) use `:ensure nil`. No global `use-package-always-ensure`.
+All third-party packages use `:ensure t`; built-ins (org, eglot, tramp, flyspell) use `:ensure nil`. No global `use-package-always-ensure`.
 
 ---
 
@@ -63,7 +86,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 VITE_API_BASE_URL=http://localhost:3001
 ```
 
-To use the real Azure Functions emulator instead, install Azure Functions Core Tools and run:
+To use the real Azure Functions emulator instead, install [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local) and run:
 
 ```bash
 cd api && npm install && func start
@@ -77,7 +100,7 @@ Then set `VITE_API_BASE_URL=http://localhost:7071` in `.env.local`.
 npm test
 ```
 
-Tests cover dependency resolution, module ordering, elisp output, and `:ensure` hygiene (guards against built-in packages being accidentally pushed to MELPA).
+Tests cover dependency resolution, module ordering, elisp output, and `:ensure` hygiene (guards against built-in packages being accidentally pushed to MELPA). The CI pipeline installs `emacs-nox` and runs the full suite before any deployment.
 
 ## Linting
 
@@ -114,9 +137,19 @@ All module definitions live in `src/modules.ts`. See [CONTRIBUTING.md](CONTRIBUT
 
 1. Add an entry to the `modules` array in `src/modules.ts`
 2. Use `:ensure t` for MELPA packages, `:ensure nil` for Emacs built-ins
-3. Run `npm test` — there are hygiene tests that will catch `:ensure` mistakes
+3. Run `npm test` — hygiene tests will catch `:ensure` mistakes
 4. Open a PR
 
 ## Stack
 
-React 18 + TypeScript + Vite · Supabase (auth + database) · Azure Static Web Apps + Azure Functions · Anthropic Claude API (AI Config feature) · GoatCounter (privacy-friendly analytics)
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 + TypeScript + Vite |
+| Auth & database | Supabase (magic-link, no password) |
+| Hosting & API | Azure Static Web Apps + Azure Functions |
+| AI Config | Anthropic Claude API |
+| Analytics | GoatCounter (privacy-friendly, no cookies) |
+
+## License
+
+[MIT](LICENSE)

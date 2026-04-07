@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="96" viewBox="0 0 480 96">
+  <rect width="480" height="96" fill="#1c1c1c" rx="10"/>
+  <text
+    x="240"
+    y="62"
+    font-family="'IBM Plex Mono', 'Cascadia Code', 'Fira Code', 'Courier New', monospace"
+    font-weight="600"
+    font-size="42"
+    letter-spacing="-1"
+    text-anchor="middle"
+  >
+    <tspan fill="#c9a84c">init</tspan><tspan fill="#e2e2e2">weave</tspan>
+  </text>
+</svg>
